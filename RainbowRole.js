@@ -44,4 +44,4 @@ client.on('ready', async () => {
 
 
 
-client.login(process.env.BOT_token);
+client.login(process.env.BOT_TOKEN);
