@@ -2,9 +2,9 @@
   "name": "tutorial",
   "version": "1.0.0",
   "description": "Hector's Little Devil",
-  "main": "index.js",
+  "main": "RainbowRole.js",
   "scripts": {
-     "start": "node index.js"
+     "start": "node RainbowRole.js"
   },
   "author": "Hector",
   "license": "ISC",
