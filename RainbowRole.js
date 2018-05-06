@@ -38,7 +38,7 @@ function changeColor() {
 
 client.on('ready', async () => {
   console.log(`Logged in as ${client.user.username}!`);
-  if(config.speed <600){console.log("The minimum speed is 60.000, if this gets abused your bot might get IP-banned"); process.exit(1);}
+  if(config.speed <60){console.log("The minimum speed is 60.000, if this gets abused your bot might get IP-banned"); process.exit(1);}
   setInterval(changeColor, config.speed);
 });
 
