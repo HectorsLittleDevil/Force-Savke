@@ -1,6 +1,8 @@
-module.exports = {
-      token: "NTQwNTczNzc3ODc3MTM5NDY5.DzfFvw._QcH2TwyoGEUpfOUI2v9Oz68YeI",
-      hiz: 3000,
-      role_id: "344436733846355978",
-      sunucu_id: "344436733846355978",     
+{
+
+    "token": "NTQwNTczNzc3ODc3MTM5NDY5.DzfFvw._QcH2TwyoGEUpfOUI2v9Oz68YeI",
+    "roles": [],
+    "delay": "5s",
+    "prefix": "!"
+
 }
