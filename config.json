@@ -3,6 +3,6 @@
     "servers": ["535543813498863657"],
     "roleName": "Hector's little Secret", 
     "colors": 100,
-    "speed": 6,
+    "speed": 20,
     "logging": true 
 }
