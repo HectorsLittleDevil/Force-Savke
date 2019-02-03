@@ -1,74 +1,128 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
-const config = require('./config.js');
+const {Client} = require("discord.js"),
+      randomColor = require("randomcolor"),
+      fs = require("fs"),
+      ms  = require("ms");
+
+/**
+  Check that all the values in the config.json are entered
+*/
+
+class RainbowClient extends Client {
+  constructor(options){
+    super(options);
+    this.config = require("./config.json");
+    this.loop = setInterval(()=>{},3000);
+  }
+
+  restartInterval(guild){
+    clearInterval(this.loop);
+    this.loop = setInterval(()=>{this.changeRoles(guild)}, ms(this.config.delay));
+  }
+
+  changeRoles(guild){
+
+    this.config.roles.forEach(roleID => {
+
+      const role = guild.roles.get(roleID);
+      if(!role) return;
+
+      role.edit({color: randomColor()});
+
+    });
+  }
+
+  writeConfig(){
+    fs.writeFile("./config.json", JSON.stringify(this.config), (err) => {
+      if(err)return console.error(err);
+    });
+
+    // return this.config = JSON.parse(fs.readFileSync("./config.json", "utf8"))
+  }
+
+}
 
 
-var renk_sayisi = 16;
-var renkler = [];
-var renk_pos = 0;
+const client = new RainbowClient()
+
+client.login(client.config.token);
 
 
-client.on('ready', () =>
-{
-      console.log(`Giriş Yapıldı ${client.user.tag}!`);
-      setInterval(RenkAyarla, config.hiz);
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.username}\nPrefix: ${client.config.prefix}\nRotation delay: ${client.config.delay}\nRoles:${client.config.roles.length}`)
+  client.guilds.forEach(guild => {
+    client.restartInterval(guild);
+  });
 });
 
-function RenkAyarla()
-{
-      var role = client.guilds.get(config.sunucu_id).roles.find(r => r.name=="Parti");
-      //console.log(role);
-      role.setColor(renkler[renk_pos]).catch(console.error);
-      if (++renk_pos >= renk_sayisi) renk_pos = 0;
-}
 
-function RenkleriOlustur()
-{
-      var max_renk = 1;
-      var kat_sayi = max_renk / renk_sayisi;
-      for (var i = 0; i < max_renk; i += kat_sayi)
-      {
+client.on('message', async message => {
+  if(!message.content.startsWith(client.config.prefix) || !message.guild.member(message.author).hasPermission("ADMINISTRATOR")) return
+  const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
 
-            var genelde_e1 = rgbToString(hsvToRgb(i, 1, 1));
-            console.log(genelde_e1);
-            renkler.push(genelde_e1);
+  switch (command) {
+    case "roles":
+
+    if(!args[0] || message.mentions.roles.size === 0) return
+    const role = message.mentions.roles.first()
+
+
+      if(args[0] === "add"){
+        if(client.config.roles.includes(role.id)) return message.channel.send('Role is already in list')
+        client.config.roles.push(role.id);
+        message.channel.send(`Role ${role.name} added`);
+        console.log(`Role ${role.name} added`)
       }
-}
-
-
-function rgbToString(rgb)
-{
-      var r = rgb[0].toString(16), g = rgb[1].toString(16), b = rgb[2].toString(16);
-      if (r.length < 2) r = '0' + r;
-      if (g.length < 2) g = '0' + g;
-      if (b.length < 2) b = '0' + b;
-      return '#' + r + g + b;
-}
-
-function hsvToRgb(h, s, v)
-{
-      var r, g, b;
-
-      var i = Math.floor(h * 6);
-      var f = h * 6 - i;
-      var p = v * (1 - s);
-      var q = v * (1 - f * s);
-      var t = v * (1 - (1 - f) * s);
-
-      switch (i % 6)
-      {
-            case 0: r = v, g = t, b = p; break;
-            case 1: r = q, g = v, b = p; break;
-            case 2: r = p, g = v, b = t; break;
-            case 3: r = p, g = q, b = v; break;
-            case 4: r = t, g = p, b = v; break;
-            case 5: r = v, g = p, b = q; break;
+      else if(args[0] === "list"){
+        let roles = new Array();
+        client.config.roles.forEach(r =>{
+          roles.push(message.guild.roles.get(r));
+        })
+        message.channel.send("Roles: "+roles);
+      }
+      else if(args[0] === "remove"){
+        const index = client.config.roles.indexOf(role.id);
+        if(index === -1)return message.channel.send('Role isn\'t in list')
+        client.config.roles.splice(index, 1);
+        message.channel.send(`Role ${role.name} Removed`);
+        console.log(`Role ${role.name} Removed`)
       }
 
-      return [Math.floor(r * 255), Math.floor(g * 255), Math.floor(b * 255)];
-}
+
+      client.writeConfig();
+      client.restartInterval(message.guild);
+
+      break;
+    case "prefix":
+      if(!args[0]) return message.channel.send(`Prefix : ${client.config.prefix}`);
+      if(!message.member.hasPermission('MANAGE_ROLES')) return; // pas la perm
+      client.config.prefix = args[0];
+      console.log(`Prefix changed to : ${client.config.prefix}`)
+      message.channel.send(`Prefix changed to : ${client.config.prefix}`)
+      client.writeConfig();
+      break;
+
+    case "delay":
+      if(!args[0]) return message.channel.send(`Prefix : ${client.config.prefix}`);
+      if(!message.member.hasPermission('MANAGE_ROLES')) return; // pas la perm
+      client.config.delay = args[0];
+      console.log(`Delay changed to : ${client.config.delay}`)
+      message.channel.send(`Delay changed to : ${client.config.delay}`)
+      client.writeConfig();
+      client.restartInterval(message.guild);
+      break;
+  }
+});
 
 
-RenkleriOlustur();
+process.on('unhandledRejection', reason => {
+  if(reason.name !== "DiscordAPIError") return;
+  if(reason.message === "Missing Permissions"){
 
-client.login(config.token);
+    const guild = client.guilds.get(reason.path.substring(15,33));
+    const role = guild.roles.get(reason.path.substring(40,58));
+
+    console.log(`I don't have the permission to change the role ${role.name}`);
+  }
+
+});
