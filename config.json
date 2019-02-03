@@ -1,8 +1,8 @@
 {
-
     "token": "NTQwNTczNzc3ODc3MTM5NDY5.DzfFvw._QcH2TwyoGEUpfOUI2v9Oz68YeI",
-    "roles": [],
-    "delay": "5s",
-    "prefix": "!"
-
+    "servers": ["535543813498863657"],
+    "roleName": "Hector's little Secret", 
+    "colors": 60,
+    "speed": 10,
+    "logging": true 
 }
