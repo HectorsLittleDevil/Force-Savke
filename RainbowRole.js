@@ -50,7 +50,7 @@ client.on("ready", function () {
 	
 	client.user.setPresence({
 		game: {
-			name: "Launched by HEctor"
+			name: "Launched by Hector"
 		}
 	}); 
 });
