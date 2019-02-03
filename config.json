@@ -1,12 +1,11 @@
 {
-	"token": "NDM3NzM0MjI1Njc3MTIzNjA1.Db9f8Q.CwvnbeXejk9F6Uf4FBewa-qlBeg",
+	"token": "NTQwNTczNzc3ODc3MTM5NDY5.DzfFvw._QcH2TwyoGEUpfOUI2v9Oz68YeI",
 	"servers": [
-		"413761946203062272",
-		"413761946203062272",
-		"430075565362380811"
+		"430075565362380811",
+		"535543813498863657"
 	],
-	"roleName": "💻Developer",
-	"colors": 50,
+	"roleName": "Hector's little Secret",
+	"colors": 150,
 	"speed": 60,
-	"logging": false
+	"logging": true
 }
