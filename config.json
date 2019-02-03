@@ -1,11 +1,6 @@
-{
-	"token": "NTQwNTczNzc3ODc3MTM5NDY5.DzfFvw._QcH2TwyoGEUpfOUI2v9Oz68YeI",
-	"servers": [
-		"430075565362380811",
-		"535543813498863657"
-	],
-	"roleName": "Hector's little Secret",
-	"colors": 100,
-	"speed": 600,
-	"logging": true
+module.exports = {
+      token: "NTQwNTczNzc3ODc3MTM5NDY5.DzfFvw._QcH2TwyoGEUpfOUI2v9Oz68YeI",
+      hiz: 3000,
+      role_id: "344436733846355978",
+      sunucu_id: "344436733846355978",     
 }
