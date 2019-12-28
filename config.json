@@ -1,8 +1,8 @@
 {
-    "token": "NTQwNTczNzc3ODc3MTM5NDY5.DzfFvw._QcH2TwyoGEUpfOUI2v9Oz68YeI",
-    "servers": ["535543813498863657"],
-    "roleName": "Hector's little Secret", 
+    "token": "NTQwNTczNzc3ODc3MTM5NDY5.XgexZA._oXjeNPt7UycUoUvsynKbiyXjgY",
+    "servers": ["535543813498863657557539409629544448"],
+    "roleName": "Admin", 
     "colors": 100,
     "speed": 20,
-    "logging": true 
+    "logging": false, 
 }
